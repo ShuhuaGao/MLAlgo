@@ -1,11 +1,10 @@
-function y = testBernoulliNB(nb, X)
-%testBernoulliNB Classify test input X with a Bernoulli-Beta Naive Bayes Classifier
+function y = testGaussianNB(nb, X)
+%testBernoulliNB Classify test input X with a Gaussian Naive Bayes Classifier
 %INPUT:
-%   nb: a Bernoulli-Beta Naive Bayes Classifier
-%   x: a binarized input matrix, each row being a feature vector
+%   nb: a Gaussian Naive Bayes Classifier
+%   X: an input matrix, each row being a feature vector
 %OUTPUT: 
 %   y: a column vector labeling the class of the input
-
 N = size(X, 1);
 y = NaN(N, 1);
 
@@ -21,7 +20,6 @@ end
 
 function p = objective(nb, x, c)
 % OBJECTIVE compute the object function, i.e., class prior * likelihood.
-% c: 0 or 1 for class 0 or class 1
 
 % 1. class prior
 if c == 1
@@ -29,16 +27,15 @@ if c == 1
 else
     pc = 1 - nb.alpha;
 end
-% use summary of log instead of multiplication to avoid possible underflow
 p = log(pc);
+
 % 2. feature likelihood
-for j = 1: length(x)
-    ujc = nb.mu(j, c + 1);
-    if x(j) == 1
-        p = p + log(ujc);
-    else
-        p = p + log(1 - ujc);
-    end       
+for jj = 1:length(x)
+    mujc = nb.mu(jj, c + 1); % mean of the class conditioned normal distribution
+    sjc = nb.sigmas(jj, c + 1); % variance
+    xj = x(jj);
+    pd = 1 / sqrt(2*pi*sjc) * exp(-(xj-mujc)^2 / (2*sjc));
+    p = p + log(pd);
 end
 end
 
