@@ -3,7 +3,7 @@ clear; close all;
 load('../Data/spamData.mat');
 
 %% Binarization
-Xtrain = Xtrain > 0;
+Xtrain = binarize(Xtrain);
 allOne = all(Xtrain);
 Xtrain(:, allOne) = []; % remove columns that are all 1
 Xtest = Xtest > 0;
