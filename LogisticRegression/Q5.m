@@ -37,6 +37,7 @@ for ii = 1:3
     xlabel('\lambda');
     ylabel('Error rate');
     title(titles{ii});
+    legend('train', 'test');
 end
 % or on a single figure
 figure;

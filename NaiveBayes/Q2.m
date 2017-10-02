@@ -28,6 +28,6 @@ predictTest = testGaussianNB(nb, Xtest_l);
 testError(2) = sum(predictTest ~= ytest) / length(ytest);
 
 %% summary
-fprintf('z-normalization:\n \ttrain error = %.3f, test error = %.3f\n', trainError(1), testError(1));
-fprintf('log transform:\n \ttrain error = %.3f, test error = %.3f\n', trainError(2), testError(2));
+fprintf('z-normalization:\n \ttrain error = %.5f, test error = %.5f\n', trainError(1), testError(1));
+fprintf('log transform:\n \ttrain error = %.5f, test error = %.5f\n', trainError(2), testError(2));
 
