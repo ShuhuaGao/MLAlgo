@@ -54,12 +54,15 @@ Q = fliplr(Q);
 
 
 %% visualize LDA dimension reduction into 2d and 3d
-colors = {'dark blue', 'almond', 'black', 'tea rose (rose)', 'blue gray', 
-          'bright maroon', 'bubbles', 'gold (metallic)', 'pearl aqua', 'violet (web)'};
+% load ten colors: colors10, a 1x10 cell array
+load('colors10.mat'); 
+
 trainXr = cell(1, 2); 
+testXr = cell(1, 2);
 for ii = [2, 3]
     W = Q(:, 1:ii);
     trainXr{ii - 1} = W' * trainX; % apply the projection
+    testXr{ii - 1} = W' * testX;
 end
 
 figure('Name', '2d');
@@ -68,7 +71,7 @@ hold on;
 legends = cell(1, 10);
 for c = 0:9
     X = trainXr{1}(:, trainy == c);
-    scatter(X(1, :), X(2, :), 4, cmu.colors(colors{c+1}), 'filled');
+    scatter(X(1, :), X(2, :), 4, colors10{c+1}, 'filled');
     legends{c+1} = sprintf('class %d', c);
 end
 legend(legends{:});
@@ -82,7 +85,36 @@ hold on;
 legends = cell(1, 10);
 for c = 0:9
     X = trainXr{2}(:, trainy == c);
-    scatter3(X(1, :), X(2, :), X(3,:), 4, cmu.colors(colors{c+1}), 'filled');
+    scatter3(X(1, :), X(2, :), X(3,:), 4, colors10{c+1}, 'filled');
+    legends{c+1} = sprintf('class %d', c);
+end
+legend(legends{:});
+xlabel('LDA1');
+ylabel('LDA2');
+zlabel('LDA3');
+grid on;
+hold off;
+
+figure('Name', 'test-2d');
+colormap(summer(10));
+hold on;
+legends = cell(1, 10);
+for c = 0:9
+    X = testXr{1}(:, testy == c);
+    scatter(X(1, :), X(2, :), 4, colors10{c+1}, 'filled');
+    legends{c+1} = sprintf('class %d', c);
+end
+legend(legends{:});
+xlabel('LDA1');
+ylabel('LDA2');
+hold off;
+
+figure('Name', 'test-3d');
+hold on;
+legends = cell(1, 10);
+for c = 0:9
+    X = testXr{2}(:, testy == c);
+    scatter3(X(1, :), X(2, :), X(3,:), 4, colors10{c+1}, 'filled');
     legends{c+1} = sprintf('class %d', c);
 end
 legend(legends{:});

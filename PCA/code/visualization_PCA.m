@@ -5,33 +5,26 @@
 close all; clear;
 
 %% load data: trainX, trainy, testX, testy (each column is a data sample)
-load('../Data/MNIST/MNIST.mat')
+load('../../Data/MNIST/MNIST.mat')
 
 %% apply PCA to trainX and the get the principle directions
-[P2d, ~, trainX2d] = PCA(trainX, 2);
+[P2d, ~, trainX2d] = PCA(trainX, 2); % P2d is the two principle directions
 [P3d, ~, trainX3d] = PCA(trainX, 3);
+[~, ~, testX2d] = PCA(testX, 2);
+[~, ~, testX3d] = PCA(testX, 3);
 
 
 %% visualize the projected data
-% define 10 colors for the 10 classes
-colors = [1, 0, 0;
-          0, 1, 0;
-          0, 0, 1;
-          1, 1, 0;
-          1, 0, 1;
-          0, 1, 1;
-          0, 0, 0;
-          1, 0.5, 0.8;
-          0, 0.7, 0.5;
-          0.2, 0.3, 0.7];
-          
+% load ten colors: colors10, a 1x10 cell array
+load('colors10.mat'); 
+
 % 2d
 % trainX2d = P2d' * trainX;
-figure;
+figure('name', 'train 2d');
 hold on;
 for ii = 0:9
    filter = trainy==ii;
-   scatter(trainX2d(1, filter), trainX2d(2, filter), 10, colors(ii+1,:), 'filled'); %marker size 10
+   scatter(trainX2d(1, filter), trainX2d(2, filter), 10, colors10{ii+1}, 'filled'); %marker size 10
 end
 hold off;
 xlabel('PC1');
@@ -40,11 +33,37 @@ legend('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
 % 3d
 % trainX3d = P3d' * trainX;
-figure;
+figure('name', 'train 3d');
 hold on;
 for ii = 0:9
    filter = trainy==ii;
-   scatter3(trainX3d(1, filter), trainX3d(2, filter), trainX3d(3, filter), 10, colors(ii+1,:), 'filled'); %marker size 10
+   scatter3(trainX3d(1, filter), trainX3d(2, filter), trainX3d(3, filter), 10, colors10{ii+1}, 'filled'); %marker size 10
+end
+hold off;
+xlabel('PC1');
+ylabel('PC2');
+zlabel('PC3');
+legend('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+grid on;
+
+figure('name', 'test 2d');
+hold on;
+for ii = 0:9
+   filter = testy==ii;
+   scatter(testX2d(1, filter), testX2d(2, filter), 10, colors10{ii+1}, 'filled'); %marker size 10
+end
+hold off;
+xlabel('PC1');
+ylabel('PC2');
+legend('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+
+% 3d
+% trainX3d = P3d' * trainX;
+figure('name', 'test 3d');
+hold on;
+for ii = 0:9
+   filter = testy==ii;
+   scatter3(testX3d(1, filter), testX3d(2, filter), testX3d(3, filter), 10, colors10{ii+1}, 'filled'); %marker size 10
 end
 hold off;
 xlabel('PC1');
